@@ -17,7 +17,7 @@ let package = Package(
         )
     ],
     targets: [
-        .executableTarget(
+        .target(
             name: "WorkTimeFocus",
             dependencies: ["WorkTimeFocusKit"],
             path: "Sources/WorkTimeFocus"

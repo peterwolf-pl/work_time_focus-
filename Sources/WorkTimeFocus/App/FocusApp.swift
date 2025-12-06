@@ -1,40 +1,43 @@
 import SwiftUI
 import WorkTimeFocusKit
 
-struct WorkTimeFocusRootView: View {
-    @StateObject private var settings = SettingsViewModel()
-
+@main
+struct WorkTimeFocusApp: App {
     private let sessionStore = SessionStore()
     private let trackerService = FocusTrackerService()
     private let exportManager = ExportManager()
 
-    var body: some View {
-        TabView {
-            HomeView(
-                viewModel: HomeViewModel(
-                    tracker: trackerService,
-                    store: sessionStore,
-                    trackedFocuses: Array(settings.trackedFocuses)
-                )
-            )
-            .tabItem {
-                Label("Home", systemImage: "house.fill")
-            }
+    @StateObject private var settings = SettingsViewModel()
 
-            HistoryView(
-                viewModel: HistoryViewModel(
-                    store: sessionStore,
-                    exportManager: exportManager
+    var body: some Scene {
+        WindowGroup {
+            TabView {
+                HomeView(
+                    viewModel: HomeViewModel(
+                        tracker: trackerService,
+                        store: sessionStore,
+                        trackedFocuses: Array(settings.trackedFocuses)
+                    )
                 )
-            )
-            .tabItem {
-                Label("History", systemImage: "clock.arrow.circlepath")
-            }
-
-            SettingsView(viewModel: settings)
                 .tabItem {
-                    Label("Settings", systemImage: "gear")
+                    Label("Home", systemImage: "house.fill")
                 }
+
+                HistoryView(
+                    viewModel: HistoryViewModel(
+                        store: sessionStore,
+                        exportManager: exportManager
+                    )
+                )
+                .tabItem {
+                    Label("History", systemImage: "clock.arrow.circlepath")
+                }
+
+                SettingsView(viewModel: settings)
+                    .tabItem {
+                        Label("Settings", systemImage: "gear")
+                    }
+            }
         }
     }
 }
